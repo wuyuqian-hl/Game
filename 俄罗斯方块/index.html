@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+    }
+    table{
+      background: #333;
+      border-collapse: collapse;
+      float: left;
+      margin-right: 30px;
+      margin-bottom: 50px;
+      margin: 0 auto;
+    }
+    .tab2{
+      margin-left: 20px;
+    }
+    .tab1{
+      margin-left: 20px;
+    }
+    td{
+      border: 1px solid #424242;
+      width: 25px;
+      height: 25px;
+    }
+    .c1{
+      background: linear-gradient(to top,rgb(163, 231, 191) , rgb(10, 143, 121));
+    }
+    .c2{
+      background: linear-gradient(to top,rgb(13, 238, 62) , rgb(2, 54, 5));
+    }
+    .c3{
+      background: linear-gradient(to top,rgb(45, 9, 248) , rgb(114, 26, 197));
+    }
+    .c4{
+      background: linear-gradient(to top,rgb(216, 219, 25) , rgb(233, 182, 13));
+    }
+    .c5{
+      background: linear-gradient(to top,rgb(235, 115, 115) , rgb(241, 14, 14));
+    }
+    .c6{
+      background: linear-gradient(to top,rgb(128, 230, 145) , rgb(96, 201, 10));
+    }
+    .c7{
+      background: linear-gradient(to top,rgb(170, 136, 231) , rgb(196, 16, 241));
+    }
+    button{
+      width: 60px;
+      height: 30px;
+      border-radius: 30%;
+      background: rgb(118, 206, 152);
+      color: white;
+      font-size: 16px;
+      margin-bottom: 30px;
+    }
+    div{
+      width: 130px;
+      float: right;
+      padding-right: 100px;
+    }
+    h2{
+      margin-left: 20px;
+    }
+    #hao{
+      margin-bottom: 10px;
+    }
+    body{
+      width: 100%;
+      background-size: 100%;
+    }
+  </style>
+</head>
+<body>
+  <h2 id="sorce">分数：</h2>
+  <h2 id= "hao">
+    帧编号：
+  </h2>
+  <div>
+    <button type="button" class="btn btn-primary">左</button>
+    <button type="button" class="btn btn-primary">右</button>
+    <button type="button" class="btn btn-primary">快</button>
+    <button type="button" class="btn btn-primary">变</button>
+  </div>
+  <script src="./js/jQuery.min.js"></script>
+  <script src="./js/bootstrap.min.js"></script>
+  <script src="./js/Game.js"></script>
+  <script src="./js/fangkuai.js"></script>
+  <script src="./js/Block.js"></script>
+  <script src = "js/map.js"></script>
+  <script >
+    var game = new Game();
+    
+  </script>
+</body>
+</html>

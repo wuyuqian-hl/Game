@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+    }
+    /* 红绿灯案例 */
+    .honglvdeng{
+      width: 150px;
+      height: 328px;
+      /* float: left; */
+      padding-right: 5px;
+      background: url(./img/honglvdeng.jpg) no-repeat 0 0 ;
+    }
+
+  </style>
+</head>
+<body>
+  <div id="bu">
+    <!-- <div class="honglvdeng"> -->
+
+    
+  </div>
+
+  <script>
+
+    //面向对象编程实现跳转，给构造器绑一个信号量
+    function Honglvdeng(){
+      this.start =0;
+      this.init();
+      this.hhh();
+    }
+    Honglvdeng.prototype.init = function(){
+      //给dom添加一个div
+      this.dom=document.createElement("div");
+      //给dom添加一个类名
+      this.dom.className="honglvdeng";
+      //将新添加的div添加到类名为bu的div上
+      document.getElementById("bu").appendChild(this.dom)
+
+    }
+    Honglvdeng.prototype.hhh =function(){
+      var hun =this;
+      this.dom.onclick=function(){
+        hun.start++;
+        if(hun.start >2){
+          hun.start=0;
+        }
+        this.style.backgroundPosition =-155 * hun.start  + "px 0px";
+      }
+    }
+    //100个红绿灯，的写法，使用while循环遍历出每个不一样的Honglvdeng实例
+    // var count = 100;
+    // while (count --) {
+    //   new Honglvdeng()
+    // }
+    var dom =new Honglvdeng()
+
+
+    原生dom实现红绿灯跳转
+    var dom =document.getElementsByClassName("honglvdeng")[0];
+    var hun =0;
+    dom.onclick = function(){
+      hun++;
+      if(hun > 2){
+        hun =0;
+      }
+      dom.style.backgroundPosition=(hun * -155) + "px 0px";
+    }
+  </script>
+</body>
+</html>

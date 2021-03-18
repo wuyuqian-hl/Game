@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body{
+      background: black;
+    }
+    .box-ball{
+      width: 60px;
+      height: 60px;
+      background:yellowgreen;
+      opacity: 0.5;
+      position: absolute;
+      border-radius: 50%;
+      animation: light 1s linear 0s infinite alternate;
+    }
+    @keyframes light{
+      from{
+        box-shadow: 0px 0px 20px yellow;
+      }
+      to{
+        box-shadow: 0px 0px 20px orange;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="ball">
+
+  </div>
+  <script>
+    function Ball(x,y,r){
+      //坐标位置和半径
+      this.x = x;
+      this.y = y;
+      this.r = r;
+      //小球随机运动量
+      do{
+        this.dx = parseInt(Math.random() *9) -4
+        this.dy = parseInt(Math.random() *9) -4
+      }while (this.dy == 0 && this.dx == 0)
+      //获取随机颜色
+      this.color = getRandomColor();
+      //初始化dom并上树
+      this.init();
+      ballArr.push(this);
+    }
+
+    //获取随机颜色的方法并维护颜色数组
+    function getRandomColor(){
+      var colorStart = "1,2,3,4,5,6,7,8,9,a,b,c,d,e,f";
+      var colorArray = colorStart.split(",");
+      var color = "#";
+      for(var i = 0;i < 6 ; i++){
+        color += colorArray[Math.floor(Math.random()*16)]
+      }
+      return color;
+    }
+    //初始化
+    Ball.prototype.init = function(){
+      // 创建一个div
+      this.dom = document.createElement("div");
+      // 给div添加类名
+      this.dom.className = "box-ball";
+      // 将这个新创建的div添加到id为ball的标签上
+      document.getElementById("ball").appendChild(this.dom);
+      // div的左侧的值
+      this.dom.style.left=this.x - this.r +"px";
+      // div顶部的值
+      this.dom.style.top=this.y - this.r +"px";
+      // div的背景颜色等于随机颜色
+      this.dom.style.background = this.color;
+    }
+    // 更新小球的实时位置
+    Ball.prototype.update = function(){
+      this.x += this.dx;
+      this.y += this.dy;
+      this.r -- ;
+      // 如果r半径小于0，就删除掉这个div
+      if(this.r < 0){
+        this.removeDom()
+      }
+      this.dom.style.left = this.x - this.r +"px";
+      this.dom.style.top = this.y - this.r +"px";
+      this.dom.style.width = this.r * 2 + "px";
+      this.dom.style.height = this.r * 2 + "px";
+    }
+    // 鼠标移动小球会跟着创建
+    document.onmousemove = function(event){
+      var x = event.clientX;
+      var y = event.clientY;
+      new Ball(x,y,30)
+    }
+    // 删除节点以及其维护的数组中的坐标
+    Ball.prototype.removeDom = function(){
+      document.getElementById("ball").removeChild(this.dom);
+      for(var i = 0 ; i < ballArr.length ; i ++){
+        if(ballArr[i] === this){
+          ballArr.splice(i,1)
+        }
+      }
+    }
+    // 将小球放入数组中统一管理
+    var ballArr = [];
+    // 设一个定时器
+    setInterval(function(){
+      for(var i = 0; i<ballArr.length ;i++){
+        ballArr[i].update()
+      }
+    },50)
+  </script>
+</body>
+</html>

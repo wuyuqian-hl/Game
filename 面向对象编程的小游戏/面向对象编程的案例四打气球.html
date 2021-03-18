@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .balloon{
+      position: absolute;
+      width: 118px;
+      height: 168px;
+      background:url(./img/balloon.png);
+    }
+    body{
+      overflow: hidden;
+      background: url(./img/bg2.png) repeat-x center bottom, -webkit-linear-gradient(top ,skyblue ,rgb(240, 159, 10));
+    }
+    html{
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div id="ball">
+    <h3 id = info1></h3>
+    <h3 id="sorce">
+     
+    </h3>
+    <h3  id="timer"></h3>
+  </div>
+  <script>
+    function Balloon(){
+      // 起始坐标，x轴随机，减掉一个118宽度
+      this.x = parseInt(Math.random()*(document.documentElement.clientWidth - 118));
+      // 起始坐标，y轴与屏幕高度一样
+      this.y =document.documentElement.clientHeight ;
+      //随机定位type值,坐标0-11之间
+      this.type = parseInt(Math.random()*12);
+      // 设置初始化速度
+      var self = this;
+      this.speed = (function(){
+        if(self.type <=8){
+        //普通球
+          return self.type *2 +1;
+        }else if(self.type == 9){
+        //2倍球
+          return 20;
+        }else if(self.type == 10){
+        //÷球
+          return 10;
+        }else if(self.type == 11){
+        //问号球
+          return parseInt(Math.random()*20)+1;
+        }
+      })()
+      //初始化dom并上树
+      this.init();
+      ballArr.push(this);
+    };
+    //初始化dom
+    Balloon.prototype.init = function(){
+      this.dom = document.createElement("div");
+      this.dom.className = "balloon";
+      document.getElementById("ball").appendChild(this.dom);
+      //渲染气球的初始坐标
+      this.dom.style.left = this.x + "px";
+      this.dom.style.top = this.y + "px";
+
+      // 初始化随机背景定位
+      var bgx = -140 * (this.type % 4);
+      var bgy = -176 * parseInt(this.type / 4);
+      this.dom.style.backgroundPosition = bgx + "px " +bgy + "px"
+    };
+    //更新dom的运动轨迹
+    Balloon.prototype.update = function(){
+      this.y -= this.speed;
+      if(this.y < -176){
+        this.removeDom()
+      }
+      this.dom.style.top = this.y + "px";
+    };
+    //当气球飞出屏幕外就移除它
+    Balloon.prototype.removeDom = function(){
+      document.getElementById("ball").removeChild(this.dom);
+      for(var i = 0 ; i < ballArr.length ; i ++){
+        if(ballArr[i] === this){
+          ballArr.splice(i,1)
+        }
+      }
+    };
+
+    //给气球设置点击事件
+    document.onclick = function(event){
+      var x = event.clientX;
+      var y = event.clientY;
+      for(var i = 0 ; i <ballArr.length;i++){
+        if(x > ballArr[i].x && x < ballArr[i].x +118 && y >ballArr[i].y &&y < ballArr[i].y +168){
+          //删除分数前获取分数
+          if(ballArr[i].type <= 8){
+            souce += ballArr[i].type + 1;
+          }else if(ballArr[i].type == 9){
+            souce  *= 2;
+          }
+          else if(ballArr[i].type == 10){
+            souce /= 2;
+          } else if(ballArr[i].type == 11){
+            souce = Math.random()>0.5?souce* 2 :souce/2;
+          }
+          ballArr[i].removeDom()
+        }
+      }
+    }
+    //维护气球的数组
+    var ballArr = [];
+    //获取帧编号
+    var info = document.getElementById("info1");
+    var souceDom = document.getElementById("sorce");
+    var timmer = document.getElementById("timer");
+    // 分数
+    var souce =0;
+    // 倒计时
+    var time =10;
+    //帧编号
+    var f = 0;
+    
+    setInterval(function(){
+      f % 30 ==0 && time --;
+      if(time<=0){
+        alert("游戏结束，您当前的得分是"+souce)
+        clearTimeout(time)
+      }
+      f++;
+      info.innerHTML = "帧编号 ：" +f;
+      souceDom.innerHTML ="分数 ：" +souce;
+      timmer.innerHTML="时间 ：" +time;
+      //当f%25等于0时new一个气球出来；短路语法
+      f % 25 == 0 && new Balloon();
+      for(var i = 0;i<ballArr.length;i++){
+        ballArr[i].update()
+      }
+    },50)
+    new Balloon()
+  </script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+      /* 小女孩行走案例 */
+  
+  .girl{
+    width: 255px;
+    height: 85px;
+    left: 100px;
+    top: 100px;
+    position: absolute;
+    background: url(./img/girl.png) no-repeat -95px -671px;
+  }
+  </style>
+</head>
+<body>
+  <button onclick="javascript:new Girl()">点我创建女孩</button>
+  <div id="two">
+    <!-- <div class="girl"> -->
+
+  </div>
+
+  <script>
+    function Girl(){
+      // 定位
+      this.left = 0;
+      // 0-3之间的上下定位随机数
+      this.top = parseInt(Math.random() * 4);
+      // 步数
+      this.speed = parseInt(Math.random() * 10) + 1;
+      //步长
+      this.step = 0;
+      this.init();
+      GirlArr.push(this)
+    }
+    Girl.prototype.init = function(){
+      this.dom = document.createElement("div");
+      this.dom.style.top = this.top * 100 + "px";
+      this.dom.className = "girl";
+      document.getElementById("two").appendChild(this.dom);
+    }
+    Girl.prototype.update = function(){
+      this.left += this.speed ;
+      this.step++;
+      if(this.step > 7){ 
+        this.step = 0;
+      }
+      if(this.left >800) this.removeDom();
+     
+      this.dom.style.backgroundPosition = -255 * this.step + "px -671px";
+      this.dom.style.left = this.left + "px";
+    }
+     
+    Girl.prototype.removeDom = function(){
+      //删除dom需要两步，删除dom本身与其维护dom的数组
+      //先让父元素删除dom本身
+      document.getElementById("two").removeChild(this.dom);
+      //删除维护dom的数组与自己对应的内容
+      for(var i = GirlArr.length - 1 ;i >= 0 ; i--){
+        if(GirlArr[i] === this){
+          GirlArr.splice(i,1)
+        }
+      }
+
+    }
+    //将小女孩统一放到数组中进行管理
+    var GirlArr = [];
+
+    setInterval(function(){
+      for(var i = 0 ; i < GirlArr.length ; i ++){
+        GirlArr[i].update()
+      }
+    },50)
+    // clearTimeout(1)
+    var dom1=new Girl()
+  </script>
+</body>
+</html>
